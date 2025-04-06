@@ -1,9 +1,19 @@
 from django.urls import path
-from .views import ProductListAPIView # Importiere unsere eben erstellte View
+# Importiere ALLE benötigten Views
+from .views import (
+    ProductListAPIView,
+    ProductDetailAPIView,
+    CategoryListAPIView,  # <-- NEU
+    CategoryDetailAPIView # <-- NEU
+)
 
-# Diese Liste enthält alle URL-Muster für die products-App
+# urlpatterns enthält jetzt Pfade für Produkte UND Kategorien
 urlpatterns = [
-
+    # Produkt-Pfade (wie bisher)
     path('products/', ProductListAPIView.as_view(), name='product-list'),
+    path('products/<int:pk>/', ProductDetailAPIView.as_view(), name='product-detail'),
 
+    # Kategorie-Pfade (NEU)
+    path('categories/', CategoryListAPIView.as_view(), name='category-list'),
+    path('categories/<int:pk>/', CategoryDetailAPIView.as_view(), name='category-detail'),
 ]
