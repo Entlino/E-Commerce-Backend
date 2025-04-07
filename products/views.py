@@ -1,52 +1,37 @@
-from rest_framework import generics
+from rest_framework import generics, viewsets
 from .models import Product, Category
 from .serializers import ProductSerializer, CategorySerializer
 
-class ProductListAPIView(generics.ListAPIView):
+
+
+class ProductViewSet(viewsets.ModelViewSet):
     """
-    API View zur Anzeige aller Produkte, unterstützt jetzt Filterung nach Kategorie.
-    Verwendet get_queryset() für die Logik.
+    Ein ViewSet für alle CRUD-Operationen für Produkte.
+    Bietet automatisch list, create, retrieve, update, partial_update, destroy Aktionen.
+    Beinhaltet auch die Kategorie-Filterung für die list-Aktion.
     """
-    # queryset = Product.objects.all().order_by('name') # <-- DIESE ZEILE LÖSCHEN/AUSKOMMENTIEREN
-    serializer_class = ProductSerializer # Serializer bleibt gleich
+    serializer_class = ProductSerializer # Welchen Übersetzer nutzen?
+
+    # Berechtigungen: Momentan keine Einschränkung (ÄNDERN IN ECHTEN APPS!)
+    # permission_classes = [permissions.AllowAny] # Standard, kann man weglassen
 
     def get_queryset(self):
         """
-        Gibt das Queryset für die Produkt-Liste zurück.
+        Gibt das Queryset für Produkte zurück.
         Filtert optional nach der 'category'-ID aus den Query-Parametern.
+        Wird für list, retrieve, update, destroy etc. verwendet.
         """
-        # Starte mit allen Produkten als Basis
-        queryset = Product.objects.all().order_by('name')
-
-        # Hole den Wert des 'category'-Parameters aus der URL (?category=...)
-        # self.request.query_params enthält alle ?key=value Parameter
-        # .get('category', None) versucht, den Wert für 'category' zu holen,
-        # gibt None zurück, falls der Parameter nicht da ist.
+        queryset = Product.objects.all().order_by('name') # Basis-Queryset
         category_id = self.request.query_params.get('category', None)
-
-        # Wenn eine category_id im URL-Parameter übergeben wurde...
         if category_id is not None:
             try:
-                # Versuche, die ID in eine Zahl umzuwandeln
                 category_id = int(category_id)
-                # ...und filtere das Queryset entsprechend
-                # .filter(category_id=...) sucht nach Produkten, deren
-                # ForeignKey-Feld 'category' die übergebene ID hat.
                 queryset = queryset.filter(category_id=category_id)
-                print(f"Filtere Produkte nach Kategorie-ID: {category_id}") # Debugging-Ausgabe im Backend-Terminal
+                print(f"Filtere Produkte nach Kategorie-ID: {category_id}")
             except ValueError:
-                # Falls keine gültige Zahl übergeben wurde, ignoriere den Filter
-                print(f"Ungültige Kategorie-ID im Filter: {category_id}") # Debugging
-                pass # Mache nichts, gib einfach alle Produkte zurück
-
-        # Gib das (möglicherweise gefilterte) Queryset zurück
+                print(f"Ungültige Kategorie-ID im Filter: {category_id}")
+                pass # Bei ungültiger ID einfach alle zurückgeben
         return queryset
-class ProductDetailAPIView(generics.RetrieveAPIView):
-    queryset = Product.objects.all()
-    serializer_class = ProductSerializer
-
-
-# --- GEÄNDERTE Kategorie-Views ---
 
 class CategoryListAPIView(generics.ListAPIView):
     """
