@@ -15,7 +15,7 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
@@ -30,25 +30,19 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
-INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-]
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    # GANZ WICHTIG: Korrekte Schreibweise und Platzierung!
-    'corsheaders.middleware.CorsMiddleware',
+    'corsheaders.middleware.CorsMiddleware', # CorsMiddleware relativ weit oben
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # NEU: Allauth Middleware hinzufügen
+    'allauth.account.middleware.AccountMiddleware', # <-- HIER EINFÜGEN
 ]
 ROOT_URLCONF = 'mein_shop.urls'
 
@@ -83,6 +77,13 @@ DATABASES = {
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
+AUTHENTICATION_BACKENDS = [
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+
+    # `allauth` specific authentication methods, such as login by e-mail
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -127,14 +128,21 @@ INSTALLED_APPS = [
 'django.contrib.auth',
 'django.contrib.contenttypes',
 'django.contrib.sessions',
-'django.contrib.messages',
+'django.contrib.messages', 
 'django.contrib.staticfiles',
-# Drittanbieter Apps
-'rest_framework',
-'corsheaders',
-
-'products', 
+    'django.contrib.sites',
+    'rest_framework',
+    'rest_framework.authtoken',
+    'corsheaders',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount', # <-- HIER EINFÜGEN (mit Komma!)
+    'dj_rest_auth',
+    'dj_rest_auth.registration',
+    'products',
 ]
+SITE_ID = 1
+
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
