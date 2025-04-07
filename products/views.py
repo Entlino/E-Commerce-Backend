@@ -1,4 +1,4 @@
-from rest_framework import generics, viewsets
+from rest_framework import generics, viewsets, permissions
 from .models import Product, Category
 from .serializers import ProductSerializer, CategorySerializer
 
@@ -11,6 +11,7 @@ class ProductViewSet(viewsets.ModelViewSet):
     Beinhaltet auch die Kategorie-Filterung für die list-Aktion.
     """
     serializer_class = ProductSerializer # Welchen Übersetzer nutzen?
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     # Berechtigungen: Momentan keine Einschränkung (ÄNDERN IN ECHTEN APPS!)
     # permission_classes = [permissions.AllowAny] # Standard, kann man weglassen
