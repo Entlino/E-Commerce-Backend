@@ -148,3 +148,19 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
     "http://127.0.0.1:5173",
 ]
+
+# Django REST Framework Einstellungen
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        # Erlaubt Login über Django Admin / Browsable API (Session)
+        'rest_framework.authentication.SessionAuthentication',
+        # Erlaubt Login über Tokens (für unsere React App)
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        # Standard-Berechtigung, falls nicht pro View gesetzt
+        # Wir haben IsAuthenticatedOrReadOnly für Produkte gesetzt,
+        # AllowAny ist oft ein sicherer globaler Standard, der pro View überschrieben wird.
+        'rest_framework.permissions.AllowAny',
+    ]
+}
