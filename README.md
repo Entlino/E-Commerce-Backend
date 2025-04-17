@@ -1,6 +1,6 @@
 # Mein Shop Projekt - Backend API
 
-Dies ist das Backend für das 'Mein Shop' E-Commerce Projekt (Stand: 6. April 2025). Es stellt eine REST-API für das Frontend bereit, um Produktdaten und später weitere Funktionalitäten zu liefern.
+Dies ist das Backend für das 'Mein Shop' E-Commerce Projekt (Stand: 16. April 2025). Es stellt eine REST-API für das Frontend bereit, um Produktdaten und später weitere Funktionalitäten zu liefern.
 
 **➡️ Frontend Repository:** [https://github.com/Entlino/E-Commerce-Frontend](https://github.com/Entlino/E-Commerce-Frontend)
 
