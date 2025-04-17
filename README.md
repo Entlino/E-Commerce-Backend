@@ -14,10 +14,10 @@ Dies ist das Backend für das 'Mein Shop' E-Commerce Projekt (Stand: 16. April 2
 
 ## 🛠️ Technologie-Stack
 
-- **Sprache:** Python 3.x
+- **Sprache:** Python 3.13
 - **Framework:** Django
 - **API Toolkit:** Django REST Framework (DRF)
-- **Datenbank:** SQLite (für Entwicklung), PostgreSQL (empfohlen für Produktion)
+- **Datenbank:** SQLite (für Entwicklung)
 - **CORS Handling:** django-cors-headers
 - **Abhängigkeitsmanagement:** pip / requirements.txt
 
